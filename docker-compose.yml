@@ -1,0 +1,16 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:2025.9.1 # Replace with your application image
+    container_name: cloudflared_tunnel
+    restart: unless-stopped
+    volumes:
+      - ./config:/home/nonroot/.cloudflared
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN} # Obtain this from Cloudflare Zero Trust dashboard
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
